@@ -2,27 +2,38 @@ name: Publish
 
 on:
   push:
-    branches: ["main", "master"]
+    branches:
+      - master
+      - next
 
 permissions:
-  contents: write
-  issues: write
-  pull-request: write
+  contents: write       # Allows Actions to push updates to the repository
+  pull-requests: write  # Allows the bot to create or update pull requests if needed
+  issues: write         # Allows the bot to create issues (e.g., for release notes)
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
-      - run: npm ci
-      - run: npm run build
-      - run: npm audit signatures
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run npm audit (optional)
+        run: npm audit
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npx semantic-release
+        run: npx semantic-release
