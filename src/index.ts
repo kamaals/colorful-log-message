@@ -2,9 +2,10 @@ import { logCreator } from "./utils/builder";
 import { getFormatters, getMessageBuilder } from "./utils/message-builder";
 export * from "./@types";
 
-const logger = logCreator({ level: 1 });
+export const colorfulLogger = logCreator({ level: 1 });
 
-const { error, debug, warning, success, info } = getFormatters(logger);
+const { error, debug, warning, success, info } = getFormatters(colorfulLogger);
+
 export const errorMessage = getMessageBuilder(
   error.titleBuilder,
   error.messageBuilder,

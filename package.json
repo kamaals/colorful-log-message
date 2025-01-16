@@ -1,6 +1,6 @@
 {
   "name": "colorful-log-message",
-  "version": "0.1.21-development",
+  "version": "0.1.22",
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
