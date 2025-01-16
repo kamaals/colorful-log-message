@@ -24,10 +24,13 @@ jobs:
           node-version: "lts/*"
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build project
-        run: yarn install
+        run: npm run build
+
+      - name: Run npm audit (optional)
+        run: npm audit
 
       - name: Release
         env:
