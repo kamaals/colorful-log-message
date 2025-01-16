@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && NODE_ENV=production BABEL_ENV=production rollup -c",
+    "build": "NODE_ENV=production BABEL_ENV=production rollup -c",
     "start": "node dist/index.js",
     "dev": "nodemon",
     "semantic-release": "semantic-release"
