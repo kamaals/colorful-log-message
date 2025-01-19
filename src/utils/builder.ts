@@ -47,7 +47,7 @@ export const factory = (options: any) => {
 };
 
 export function logCreator(
-  options: any,
+  options: { level: number } = { level: 1 },
 ): LoggerFunction & ILogOptions & ILogger {
   return factory(options) as ILogger;
 }
