@@ -1,5 +1,5 @@
 import { ColorSupportLevel } from "../utils/color-support";
-export type Theme = "minimal" | "agnostic";
+export type Theme = "minimal" | "bullet-train";
 
 export type ConvertColor = {
   rgbToAnsi256(red: number, green: number, blue: number): number;

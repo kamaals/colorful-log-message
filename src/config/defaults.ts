@@ -14,7 +14,7 @@ export type SymbolWithColorType = {
   fg: ColorNames;
 };
 
-export const SEGMENTSYBOLS_COLOR: Record<LogLevelKeys, SymbolWithColorType> = {
+export const SEGMENT_SYBOL_COLOR: Record<LogLevelKeys, SymbolWithColorType> = {
   error: {
     symbol: "✗",
     bg: "bgRed",

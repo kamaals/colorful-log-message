@@ -1,5 +1,4 @@
 import { isUnicodeSupported } from "./unicode";
-import { MessageBuilderFunc } from "../@types";
 import { NEW_LINE } from "../config/defaults";
 
 export function stringReplaceAll(
@@ -48,18 +47,6 @@ export function stringEncaseCRLFWithFirstIndex(
   return returnValue;
 }
 
-export function fillWithPad(
-  withString: string,
-  length = 11,
-  side: "l" | "r" = "r",
-  pad = " ",
-) {
-  const total = withString.length;
-  const remaining = length > total + 1 ? length - total : 1;
-  const space = pad.repeat(remaining);
-  return side === "r" ? `${withString}${space}` : `${space}${withString}`;
-}
-
 export const isNotEmpty = (obj: Record<string, unknown> | any) =>
   Object.keys(obj).length > 0;
 
@@ -75,23 +62,6 @@ export const getLines = (str: string) => str.split(/\r\n|\r|\n/);
 
 export const getMiddleOfTheLine = (lines: Array<string>) =>
   Math.floor(lines.length / 2);
-
-export const printMinimalBody = (
-  segment: MessageBuilderFunc<string, string>,
-  body: string,
-  title: string,
-) => {
-  const lines = getLines(body);
-  const midLine = getMiddleOfTheLine(lines);
-  console.log(lines);
-  return lines
-    .map((line, index) => {
-      return index === midLine
-        ? segment(title) + " ┤ " + line
-        : " ".repeat(8) + "│ " + line;
-    })
-    .join(NEW_LINE);
-};
 
 export const smallFirst = (str: string) =>
   str.charAt(0).toLowerCase() + str.slice(1);

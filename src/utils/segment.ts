@@ -5,7 +5,7 @@ import {
   SegmentBuilderType,
   SegmentType,
 } from "../@types";
-import { SEGMENTSYBOLS_COLOR } from "../config/defaults";
+import { SEGMENT_SYBOL_COLOR } from "../config/defaults";
 import { smallFirst } from "./helper";
 
 export const getSegmentsBuilder = (
@@ -44,7 +44,7 @@ export const getSegmentsFromInfo = (
   info: IncomingMessageType,
   infoType: "header" | "footer" = "header",
 ): Array<SegmentType> => {
-  const type = SEGMENTSYBOLS_COLOR[info.level];
+  const type = SEGMENT_SYBOL_COLOR[info.level];
   const item: Array<SegmentType> =
     infoType === "header"
       ? [

@@ -5,6 +5,11 @@ import {
   printBulletTrainBody,
 } from "../themes/bullet-train";
 import { prettyPrintMessage } from "./pretti-print";
+import {
+  minimalFooter,
+  minimalHeader,
+  printMinimalBody,
+} from "../themes/minimal";
 
 function buildMessage(logger: ILogger) {
   return (message: IncomingMessageType) =>
@@ -13,11 +18,20 @@ function buildMessage(logger: ILogger) {
     bulletTrainFooter(message, logger);
 }
 
+function buildMinimalMessage(logger: ILogger) {
+  return (message: IncomingMessageType) =>
+    minimalHeader(message, logger) +
+    printMinimalBody(logger, prettyPrintMessage(message), message.level) +
+    minimalFooter(message, logger);
+}
+
 export const getFormatters = (
   mainLogger: ILogger,
-  _: Theme = "minimal",
+  theme: Theme = "minimal",
 ): ((message: IncomingMessageType) => string) => {
-  return buildMessage(mainLogger);
+  return theme === "bullet-train"
+    ? buildMessage(mainLogger)
+    : buildMinimalMessage(mainLogger);
 };
 
 export const getLogger = (logger: ILogger, theme: Theme = "minimal") => {
