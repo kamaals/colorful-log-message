@@ -1,28 +1,16 @@
 import { logCreator } from "./utils/builder";
-import { getFormatters, getMessageBuilder } from "./utils/message-builder";
+import { getLogger } from "./utils/message-builder";
 export * from "./@types";
-
 export const colorfulLogger = logCreator({ level: 1 });
 
-const { error, debug, warning, success, info } = getFormatters(colorfulLogger);
+const messageColorful = getLogger(colorfulLogger, "agnostic");
 
-export const errorMessage = getMessageBuilder(
-  error.titleBuilder,
-  error.messageBuilder,
-);
-export const debugMessage = getMessageBuilder(
-  debug.titleBuilder,
-  debug.messageBuilder,
-);
-export const warningMessage = getMessageBuilder(
-  warning.titleBuilder,
-  warning.messageBuilder,
-);
-export const successMessage = getMessageBuilder(
-  success.titleBuilder,
-  success.messageBuilder,
-);
-export const infoMessage = getMessageBuilder(
-  info.titleBuilder,
-  info.messageBuilder,
+console.log(
+  messageColorful({
+    level: "debug",
+    message: {
+      title: "Hello",
+    },
+    subtitle: "World",
+  }),
 );

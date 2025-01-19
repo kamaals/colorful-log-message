@@ -1,4 +1,91 @@
 import { ColorSupportLevel } from "../utils/color-support";
+export type Theme = "minimal" | "agnostic";
+
+export type ConvertColor = {
+  rgbToAnsi256(red: number, green: number, blue: number): number;
+  hexToRgb(hex: string): [red: number, green: number, blue: number];
+  hexToAnsi256(hex: string): number;
+  ansi256ToAnsi(code: number): number;
+  rgbToAnsi(red: number, green: number, blue: number): number;
+  hexToAnsi(hex: string): number;
+};
+
+export type MessageBuilderFactory<M, T> = () => MessageBuilderFunc<M, T>;
+
+export type AnsiStyles = {
+  readonly modifier: Modifier;
+  readonly color: ColorBase & FG;
+  readonly bgColor: ColorBase & BG;
+  readonly codes: ReadonlyMap<number, number>;
+} & FG &
+  BG &
+  Modifier &
+  ConvertColor;
+
+export interface ILogger {
+  (...text: unknown[]): string;
+  level: ColorSupportLevel;
+  rgb: (red: number, green: number, blue: number) => this;
+  hex: (color: string) => this;
+  ansi256: (index: number) => this;
+  bgRgb: (red: number, green: number, blue: number) => this;
+  bgHex: (color: string) => this;
+  bgAnsi256: (index: number) => this;
+
+  readonly reset: this;
+  readonly bold: this;
+  readonly dim: this;
+  readonly italic: this;
+  readonly underline: this;
+  readonly overline: this;
+  readonly inverse: this;
+  readonly hidden: this;
+  readonly strikethrough: this;
+  readonly visible: this;
+
+  readonly black: this;
+  readonly red: this;
+  readonly green: this;
+  readonly yellow: this;
+  readonly blue: this;
+  readonly magenta: this;
+  readonly cyan: this;
+  readonly white: this;
+  readonly gray: this;
+
+  /*
+    Alias for `blackBright`.
+    */
+  readonly grey: this;
+  readonly blackBright: this;
+  readonly redBright: this;
+  readonly greenBright: this;
+  readonly yellowBright: this;
+  readonly blueBright: this;
+  readonly magentaBright: this;
+  readonly cyanBright: this;
+  readonly whiteBright: this;
+
+  readonly bgBlack: this;
+  readonly bgRed: this;
+  readonly bgGreen: this;
+  readonly bgYellow: this;
+  readonly bgBlue: this;
+  readonly bgMagenta: this;
+  readonly bgCyan: this;
+  readonly bgWhite: this;
+  readonly bgGray: this;
+  readonly bgGrey: this;
+
+  readonly bgBlackBright: this;
+  readonly bgRedBright: this;
+  readonly bgGreenBright: this;
+  readonly bgYellowBright: this;
+  readonly bgBlueBright: this;
+  readonly bgMagentaBright: this;
+  readonly bgCyanBright: this;
+  readonly bgWhiteBright: this;
+}
 import { STYLER } from "../config/defaults";
 
 export type LogLevelKeys =
@@ -108,25 +195,6 @@ export type BG = {
   readonly bgWhiteBright: ASCIIDOCTOR;
 };
 
-export type ConvertColor = {
-  rgbToAnsi256(red: number, green: number, blue: number): number;
-  hexToRgb(hex: string): [red: number, green: number, blue: number];
-  hexToAnsi256(hex: string): number;
-  ansi256ToAnsi(code: number): number;
-  rgbToAnsi(red: number, green: number, blue: number): number;
-  hexToAnsi(hex: string): number;
-};
-
-export type AnsiStyles = {
-  readonly modifier: Modifier;
-  readonly color: ColorBase & FG;
-  readonly bgColor: ColorBase & BG;
-  readonly codes: ReadonlyMap<number, number>;
-} & FG &
-  BG &
-  Modifier &
-  ConvertColor;
-
 export interface ILogger {
   (...text: unknown[]): string;
   level: ColorSupportLevel;
@@ -195,7 +263,7 @@ export interface ILogger {
 export type IncomingMessageType = {
   timestamp?: number;
   message: string | Record<string, unknown> | Error;
-  title: string;
+  level: LogLevelKeys;
   subtitle?: string;
 };
 
@@ -206,30 +274,47 @@ export type SegmentFunc<M, T> = (
   title: ILogger,
 ) => MessageBuilderFunc<M, T>;
 
+export type SegmentFuncMinimal<M, T> = (
+  segment: ILogger,
+) => MessageBuilderFunc<M, T>;
+
 export type ColorBuilderFunc<M, T, K> = (
-  segmentBuilder: MessageBuilderFunc<M, T>,
   titleBuilder: MessageBuilderFunc<M, T>,
+  segmentBuilder: MessageBuilderFunc<M, T>,
+
+  theme?: Theme,
 ) => (message: K) => string;
 
-export type MessageBuilderFactory<M, T> = {
-  error: {
-    titleBuilder: MessageBuilderFunc<M, T>;
-    messageBuilder: MessageBuilderFunc<M, T>;
+export interface IMessageStripe {
+  dateTime?: string;
+  timeZone?: string;
+  level: LogLevelKeys;
+  title: string;
+  description?: string;
+}
+
+export type UseSegmentToGetMessageBuilderFunc<M, T> = (
+  logger: ILogger,
+  printer: ILogger,
+  edge?: ILogger,
+) => MessageBuilderFunc<M, T>;
+
+export type ColorArgs = { fg: ILogger; bg: ILogger; textColor: ILogger };
+export type ColorNames = keyof ILogger;
+
+export type SegmentType = { text: string; bg: ColorNames; fg: ColorNames };
+export type SegmentBuilderType = {
+  text: string;
+  bg: ColorNames;
+  fg: ColorNames;
+  pad: {
+    leading: string;
+    trailing: string;
   };
-  debug: {
-    titleBuilder: MessageBuilderFunc<M, T>;
-    messageBuilder: MessageBuilderFunc<M, T>;
-  };
-  warning: {
-    titleBuilder: MessageBuilderFunc<M, T>;
-    messageBuilder: MessageBuilderFunc<M, T>;
-  };
-  success: {
-    titleBuilder: MessageBuilderFunc<M, T>;
-    messageBuilder: MessageBuilderFunc<M, T>;
-  };
-  info: {
-    titleBuilder: MessageBuilderFunc<M, T>;
-    messageBuilder: MessageBuilderFunc<M, T>;
+  next: boolean;
+  first: boolean;
+  arrow: {
+    fg: ColorNames;
+    bg: ColorNames;
   };
 };

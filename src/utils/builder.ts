@@ -9,7 +9,13 @@ import {
   ILogger,
 } from "../@types";
 import ansiStyles from "./ansi";
-import { GENERATOR, IS_EMPTY, levelMapping, STYLER } from "../config/defaults";
+import {
+  GENERATOR,
+  IS_EMPTY,
+  levelMapping,
+  NEW_LINE,
+  STYLER,
+} from "../config/defaults";
 import { stringEncaseCRLFWithFirstIndex, stringReplaceAll } from "./helper";
 
 const styles = Object.create(null);
@@ -138,7 +144,7 @@ const applyStyle = (self: any, string: string) => {
       styler = styler.parent;
     }
   }
-  const lfIndex = string.indexOf("\n");
+  const lfIndex = string.indexOf(NEW_LINE);
   if (lfIndex !== -1) {
     string = stringEncaseCRLFWithFirstIndex(string, closeAll, openAll, lfIndex);
   }
