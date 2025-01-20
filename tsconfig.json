@@ -41,6 +41,7 @@
     "coverage",
     "config",
     "dist",
-    "node_modules/**"
+    "node_modules/**",
+    "doc"
   ]
 }
