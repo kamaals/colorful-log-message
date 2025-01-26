@@ -22,3 +22,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Bundler cache
+.bundle
+vendor
+Gemfile.lock
+
+# Jekyll cache
+.jekyll-cache
+.jekyll-metadata
+_site
+
+# RubyGems
+*.gem
+
+# NPM dependencies
+
+package-lock.json
+
+# IDE configurations
+!.vscode/settings.json
+
+!.vscode/tasks.json
+
+# Misc
+docs/_sass/vendors
+docs/assets/js/dist
