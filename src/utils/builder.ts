@@ -42,17 +42,17 @@ export const factory = (options: any) => {
   const logger: LoggerFunction = (...strings: Array<string>) =>
     strings.join(" ");
   applyOptions(logger, options);
-  Object.setPrototypeOf(logger, logCreator.prototype);
+  Object.setPrototypeOf(logger, createColored.prototype);
   return logger;
 };
 
-export function logCreator(
+export function createColored(
   options: { level: number } = { level: 1 },
 ): LoggerFunction & ILogOptions & ILogger {
   return factory(options) as ILogger;
 }
 
-Object.setPrototypeOf(logCreator.prototype, Function.prototype);
+Object.setPrototypeOf(createColored.prototype, Function.prototype);
 
 for (const [styleName, st] of Object.entries(ansiStyles)) {
   const style = st as ASCIIDOCTOR;
@@ -245,4 +245,4 @@ for (const model of usedModels) {
   };
 }
 
-Object.defineProperties(logCreator.prototype, styles);
+Object.defineProperties(createColored.prototype, styles);
