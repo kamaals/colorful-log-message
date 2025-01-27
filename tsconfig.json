@@ -42,6 +42,7 @@
     "config",
     "dist",
     "node_modules/**",
-    "docs"
+    "docs",
+    "README.md"
   ]
 }
