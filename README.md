@@ -214,6 +214,7 @@ const parseMorganString = (message: string): MorganMessage => {
        return JSON.parse(message.trim()) as MorganMessage;
      } catch (error) {
        if (error instanceof Error) {
+         // @ts-nocheck
          return {
            message: "Error parsing morgan message to JSON",
            level: "error",
